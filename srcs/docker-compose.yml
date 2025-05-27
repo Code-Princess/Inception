@@ -1,18 +1,5 @@
 version: '3.8'
-services: 
-  wordpress:
-    image: wordpress:latest
-    depends_on:
-      - db
-    restart: always
-    volumes:
-      - wp_data:/var/www/html
-    ports:
-      - "80:80"
-    environment:
-      WORDPRESS_DB_USER: wp_user
-      WORDPRESS_DB_PASSWORD: wp_db_password
-      WORDPRESS_DB_HOST: db:3306
+services:
   db:
     image: maria:latest
     restart: always
@@ -29,20 +16,32 @@ services:
         timeout: 10s
         retries: 10
         start_period: 10s
-  nginx:
-    build: ./requirements/nginx
-    volumes: wp_data:/var/www/html
-    ports:
-      - 443:443
-    depends_on:
-      wordpress:
-        condition: service_healthy
-    environment:
-      DOMAIN_NAME=${DOMAIN_NAME}
+  # wordpress:
+  #   image: wordpress:latest
+  #   depends_on:
+  #     - db
+  #   restart: always
+  #   volumes:
+  #     - wp_data:/var/www/html
+  #   ports:
+  #     - "80:80"
+  #   environment:
+  #     WORDPRESS_DB_USER: wp_user
+  #     WORDPRESS_DB_PASSWORD: wp_db_password
+      # WORDPRESS_DB_HOST: db:3306
 
-    
+  # nginx:
+  #   build: ./requirements/nginx
+  #   volumes: wp_data:/var/www/html
+  #   ports:
+  #     - 443:443
+  #   depends_on:
+  #     wordpress:
+  #       condition: service_healthy
+  #   environment:
+  #     DOMAIN_NAME=${DOMAIN_NAME}
 
 
 volumes:
-  wp_data:
   db_data:
+  # wp_data:
