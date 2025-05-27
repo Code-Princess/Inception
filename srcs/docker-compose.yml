@@ -5,11 +5,8 @@ services:
     restart: always
     volumes:
       - db_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root_pass
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wp_user
-      MYSQL_PASSWORD: wp_db_password
+    env_file:
+      - .env
     healthcheck:
       test:
         interval: 20s
@@ -45,3 +42,12 @@ services:
 volumes:
   db_data:
   # wp_data:
+
+
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
+  wp_password:
+    file: ../secrets/wp_password.txt
