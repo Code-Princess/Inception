@@ -9,5 +9,6 @@ COPY tools/init.sql /etc/mysql/init.sql
 COPY tools/init.sh .
 
 RUN chmod +x init.sh
-
+# EXPOSE 3306
+RUN mariadb-install-db
 CMD ["./init.sh"]

@@ -8,16 +8,20 @@ networks:
 services:
   db:
     image: maria:latest
-    # build:
-    #   context: ./requirements/mariadb/
-    #   dockerfile: ./requirements/mariadb/Dockerfile
+    build: ./requirements/mariadb/
     networks:
       - inception
     restart: always
     volumes:
       - db_data:/var/lib/mysql
-    env_file:
-      - .env
+    environment:
+      - MYSQL_USER=mysql_user
+    #   - .env
+    ports:
+      - "3306:3306"
+    secrets:
+    - db_root_password
+    - db_password
     # healthcheck:
     #   test:
     #     interval: 20s
@@ -27,9 +31,9 @@ services:
 
   dev:
     image: dev_helper
-    # build:
-    #   context: ./requirements/dev/
-    #   dockerfile: ./requirements/dev/Dockerfile
+    build: ./requirements/dev/
+    depends_on:
+      - db
     networks:
       - inception
     stdin_open: true
