@@ -1,18 +1,41 @@
 version: '3.8'
+
+networks:
+  inception:
+    name: inception42
+    driver: bridge
+
 services:
   db:
     image: maria:latest
+    # build:
+    #   context: ./requirements/mariadb/
+    #   dockerfile: ./requirements/mariadb/Dockerfile
+    networks:
+      - inception
     restart: always
     volumes:
       - db_data:/var/lib/mysql
     env_file:
       - .env
-    healthcheck:
-      test:
-        interval: 20s
-        timeout: 10s
-        retries: 10
-        start_period: 10s
+    # healthcheck:
+    #   test:
+    #     interval: 20s
+    #     timeout: 10s
+    #     retries: 10
+    #     start_period: 10s
+
+  dev:
+    image: dev_helper
+    # build:
+    #   context: ./requirements/dev/
+    #   dockerfile: ./requirements/dev/Dockerfile
+    networks:
+      - inception
+    stdin_open: true
+    tty: true
+
+
   # wordpress:
   #   image: wordpress:latest
   #   depends_on:
