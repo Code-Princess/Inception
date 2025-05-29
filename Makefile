@@ -1,7 +1,7 @@
 
 setup:
-	mkdir -p ./data/wordpress
-	mkdir -p ./data/mariadb
+	mkdir -p ../data/wordpress
+	mkdir -p ../data/mariadb
 
 build: setup
 	docker compose -f ./srcs/docker-compose.yml build
@@ -12,8 +12,8 @@ up:
 down:
 	docker compose -f ./srcs/docker-compose.yml down
 
-fclean:
-	rm -rf ./data
+fclean: down
+	rm -rf ../data
 
 # build, up, down rm clean 
 
