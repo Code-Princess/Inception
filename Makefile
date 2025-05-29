@@ -13,7 +13,7 @@ down:
 	docker compose -f ./srcs/docker-compose.yml down
 
 fclean:
-	rm -r ./data
+	rm -rf ./data
 
 # build, up, down rm clean 
 

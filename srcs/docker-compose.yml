@@ -13,8 +13,12 @@ services:
       - inception
     restart: always
     volumes:
+      - type: bind
+        source: /home/llacsivy/data/mariadb
+        target: /var/lib/mysql
+      # - mariadb:/var/lib/mysql
       # - /home/llacsivy/data/mariadb:/var/lib/mysql
-      - /Users/llacsivy/Coding-Projects/Inception/data/mariadb:/var/lib/mysql
+      # - /Users/llacsivy/Coding-Projects/Inception/data/mariadb:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=wp_db
       - MYSQL_USER=mysql_user
@@ -63,8 +67,12 @@ services:
   nginx:
     image: nginx
     build: ./requirements/nginx
-    # volumes:
-    #   - /Users/llacsivy/Coding-Projects/Inception/data/wordpress:/var/www/html
+    volumes:
+      - type: bind
+        source: /home/llacsivy/data/wordpress
+        target: /var/www/html
+      # - /home/llacsivy/data/wordpress:/var/www/html
+      # - /Users/llacsivy/Coding-Projects/Inception/data/wordpress:/var/www/html
     ports:
       - 443:443
     # depends_on:

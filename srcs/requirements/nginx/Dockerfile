@@ -5,6 +5,9 @@ RUN apt-get update && \
 	apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# debug 'print'
+COPY ./Dockerfile /var/www/html/dockfile
+
 COPY ./tools/certs.sh /tools/certs.sh
 RUN chmod +x /tools/certs.sh && /tools/certs.sh
 
