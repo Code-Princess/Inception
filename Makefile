@@ -1,12 +1,10 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: llacsivy <llacsivy@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/05/23 19:06:33 by llacsivy          #+#    #+#              #
-#    Updated: 2025/05/23 19:06:34 by llacsivy         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
+setup:
+	mkdir -p ./data/wordpress
+	mkdir -p ./data/mariadb
+
+
+# production:
+# setup:
+# 	mkdir -p /home/llacsivy/data/wordpress
+# 	mkdir -p /home/llacsivy/data/mariadb

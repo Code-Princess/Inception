@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 networks:
   inception:
@@ -6,22 +6,28 @@ networks:
     driver: bridge
 
 services:
-  db:
-    image: maria:latest
+  mariadb:
+    image: mariadb:latest
     build: ./requirements/mariadb/
     networks:
       - inception
     restart: always
     volumes:
-      - db_data:/var/lib/mysql
+      # - /home/llacsivy/data/mariadb:/var/lib/mysql
+      - /Users/llacsivy/Coding-Projects/Inception/data/mariadb:/var/lib/mysql
     environment:
+      - MYSQL_DATABASE=wp_db
       - MYSQL_USER=mysql_user
+      - MYSQL_PASSWORD=123
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=123
+
     #   - .env
     ports:
       - "3306:3306"
     secrets:
-    - db_root_password
-    - db_password
+      - db_root_password
+      - db_password
     # healthcheck:
     #   test:
     #     interval: 20s
@@ -33,26 +39,26 @@ services:
     image: dev_helper
     build: ./requirements/dev/
     depends_on:
-      - db
+      - mariadb
     networks:
       - inception
     stdin_open: true
     tty: true
 
-
   # wordpress:
   #   image: wordpress:latest
+  #   build: ./requirements/wordpress
   #   depends_on:
-  #     - db
+  #     - mariadb
   #   restart: always
   #   volumes:
-  #     - wp_data:/var/www/html
+  #     - /home/llacsivy/data/wordpress:/var/www/html
   #   ports:
   #     - "80:80"
   #   environment:
   #     WORDPRESS_DB_USER: wp_user
   #     WORDPRESS_DB_PASSWORD: wp_db_password
-      # WORDPRESS_DB_HOST: db:3306
+  #     WORDPRESS_DB_HOST: db:3306
 
   # nginx:
   #   build: ./requirements/nginx
@@ -66,9 +72,21 @@ services:
   #     DOMAIN_NAME=${DOMAIN_NAME}
 
 
-volumes:
-  db_data:
-  # wp_data:
+# volumes:
+#   mariadb_data:
+#     name: mariadb_vol
+#     driver: local
+#     driver-opts:
+#       type: none
+#       o: bind
+#       device: /home/llacsivy/data/mariadb
+#   wordpress_data:
+#     name: wordpress_vol
+#     driver: local
+#     driver-opts:
+#       type: none
+#       o: bind
+#       device: /home/llacsivy/data/wordpress
 
 
 secrets:
