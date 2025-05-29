@@ -7,7 +7,7 @@ networks:
 
 services:
   mariadb:
-    image: mariadb:latest
+    image: mariadb
     build: ./requirements/mariadb/
     networks:
       - inception
@@ -60,16 +60,28 @@ services:
   #     WORDPRESS_DB_PASSWORD: wp_db_password
   #     WORDPRESS_DB_HOST: db:3306
 
-  # nginx:
-  #   build: ./requirements/nginx
-  #   volumes: wp_data:/var/www/html
-  #   ports:
-  #     - 443:443
-  #   depends_on:
-  #     wordpress:
-  #       condition: service_healthy
-  #   environment:
-  #     DOMAIN_NAME=${DOMAIN_NAME}
+  nginx:
+    image: nginx
+    build: ./requirements/nginx
+    # volumes:
+    #   - /Users/llacsivy/Coding-Projects/Inception/data/wordpress:/var/www/html
+    ports:
+      - 443:443
+    # depends_on:
+    #   wordpress:
+    #     condition: service_healthy
+    # environment:
+    #   DOMAIN_NAME=${DOMAIN_NAME}
+
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
+  wp_password:
+    file: ../secrets/wp_password.txt
+
+
 
 
 # volumes:
@@ -87,12 +99,3 @@ services:
 #       type: none
 #       o: bind
 #       device: /home/llacsivy/data/wordpress
-
-
-secrets:
-  db_root_password:
-    file: ../secrets/db_root_password.txt
-  db_password:
-    file: ../secrets/db_password.txt
-  wp_password:
-    file: ../secrets/wp_password.txt
