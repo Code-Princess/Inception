@@ -13,11 +13,9 @@ services:
         source: /home/llacsivy/data/mariadb
         target: /var/lib/mysql
     environment:
-      - MYSQL_DATABASE=wp_db
-      - MYSQL_USER=mysql_user
-      - MYSQL_PASSWORD=123
-      - MYSQL_ROOT_USER=root
-      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_ROOT_USER=${MYSQL_ROOT_USER}
 
     networks:
       - inception
@@ -42,18 +40,15 @@ services:
     ports:
       - "80:80"
     environment:
-      - WORDPRESS_DB_USER=wp_user
-      - WORDPRESS_DB_HOST=mariadb:3306
-      - WORDPRESS_DB_NAME=wp_db
-      - WORDPRESS_DB_HOST=mariadb
-      - WORDPRESS_DB_PORT=3306
-      - WORDPRESS_ROOT=root
-      - WORDPRESS_DB_PASSWORD_FILE=/run/secrets/db_root_password
-      - WORDPRESS_ADMIN_PASSWORD_FILE=/run/secrets/wp_admin_password
-      - WORDPRESS_USER_PASSWORD_FILE=/run/secrets/wp_user_password
-      - WORDPRESS_ADMIN_USER=boss
-      - WORDPRESS_USER=author
-      - WORDPRESS_WEBSITE=https://llacsivy.42.fr
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+      - WORDPRESS_DB_PORT=${WORDPRESS_DB_PORT}
+      - WORDPRESS_ROOT=${WORDPRESS_ROOT}
+      - WORDPRESS_ADMIN_USER=${WORDPRESS_ADMIN_USER}
+      - WORDPRESS_USER=${WORDPRESS_USER}
+      - WORDPRESS_WEBSITE=${WORDPRESS_WEBSITE}
     secrets:
       - db_root_password
       - wp_admin_password

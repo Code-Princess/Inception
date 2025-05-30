@@ -1,12 +1,12 @@
 #!/bin/sh
 set -e
-export WORDPRESS_ROOT_PASSWORD=$(cat ${WORDPRESS_DB_PASSWORD_FILE})
-export WORDPRESS_ADMIN_PASSWORD=$(cat ${WORDPRESS_ADMIN_PASSWORD_FILE})
-export WORDPRESS_USER_PASSWORD=$(cat ${WORDPRESS_USER_PASSWORD_FILE})
+WORDPRESS_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+WORDPRESS_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+WORDPRESS_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 
-echo "Admin user: ${WORDPRESS_ADMIN_USER}"
-echo "Admin pass: ${WORDPRESS_ADMIN_PASSWORD}"
-echo "User pass: ${WORDPRESS_USER_PASSWORD}"
+# echo "Admin user: ${WORDPRESS_ADMIN_USER}"
+# echo "Admin pass: ${WORDPRESS_ADMIN_PASSWORD}"
+# echo "User pass: ${WORDPRESS_USER_PASSWORD}"
 if [ ! -f /var/www/html/index.php ]; then
     curl -O https://wordpress.org/latest.tar.gz
     tar -xzf latest.tar.gz
@@ -51,8 +51,8 @@ if ! ./wp-cli.phar user exists ${WORDPRESS_USER}  --allow-root; then
         --allow-root
 fi
 
-unset WORDPRESS_ROOT_PASSWORD
-unset WORDPRESS_ADMIN_PASSWORD
-unset WORDPRESS_USER_PASSWORD
+# unset WORDPRESS_ROOT_PASSWORD
+# unset WORDPRESS_ADMIN_PASSWORD
+# unset WORDPRESS_USER_PASSWORD
 
 exec php-fpm7.4 -F
