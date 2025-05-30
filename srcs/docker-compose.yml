@@ -1,5 +1,3 @@
-# version: '3.8'
-
 networks:
   inception:
     name: inception42
@@ -9,16 +7,11 @@ services:
   mariadb:
     image: mariadb
     build: ./requirements/mariadb/
-    networks:
-      - inception
     restart: always
     volumes:
       - type: bind
         source: /home/llacsivy/data/mariadb
         target: /var/lib/mysql
-      # - mariadb:/var/lib/mysql
-      # - /home/llacsivy/data/mariadb:/var/lib/mysql
-      # - /Users/llacsivy/Coding-Projects/Inception/data/mariadb:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=wp_db
       - MYSQL_USER=mysql_user
@@ -26,22 +19,16 @@ services:
       - MYSQL_ROOT_USER=root
       - MYSQL_ROOT_PASSWORD=123
 
-    #   - .env
+    networks:
+      - inception
     ports:
       - "3306:3306"
     secrets:
       - db_root_password
       - db_password
-    # healthcheck:
-    #   test:
-    #     interval: 20s
-    #     timeout: 10s
-    #     retries: 10
-    #     start_period: 10s
-
 
   wordpress:
-    image: wordpress:latest
+    image: wordpress
     build: ./requirements/wordpress
     depends_on:
       - mariadb
@@ -60,25 +47,29 @@ services:
       WORDPRESS_DB_HOST: mariadb:3306
       WORDPRESS_DB_NAME: wordpress
 
-
   nginx:
     image: nginx
     build: ./requirements/nginx
+    depends_on:
+      - wordpress
     volumes:
       - type: bind
         source: /home/llacsivy/data/wordpress
         target: /var/www/html
-      # - /home/llacsivy/data/wordpress:/var/www/html
-      # - /Users/llacsivy/Coding-Projects/Inception/data/wordpress:/var/www/html
     networks:
       - inception
     ports:
       - 443:443
-    # depends_on:
-    #   wordpress:
-    #     condition: service_healthy
-    # environment:
-    #   DOMAIN_NAME=${DOMAIN_NAME}
+
+  dev:
+    image: dev_helper
+    build: ./requirements/dev/
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+    stdin_open: true
+    tty: true
 
 secrets:
   db_root_password:
@@ -106,13 +97,3 @@ secrets:
 #       type: none
 #       o: bind
 #       device: /home/llacsivy/data/wordpress
-
-  # dev:
-  #   image: dev_helper
-  #   build: ./requirements/dev/
-  #   depends_on:
-  #     - mariadb
-  #   networks:
-  #     - inception
-  #   stdin_open: true
-  #   tty: true
