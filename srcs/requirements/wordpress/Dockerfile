@@ -25,18 +25,25 @@ RUN sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php/*/fpm/pool.d/www.con
 # Create working directory
 WORKDIR /var/www/html
 
-# Download and extract WordPress
-RUN curl -o /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz && \
-    tar -xzf /tmp/wordpress.tar.gz -C /var/www/html --strip-components=1 && \
-    rm /tmp/wordpress.tar.gz
+# Copy startup script into container
+COPY ./tools/init.sh /usr/local/bin/setup-wordpress.sh
+RUN chmod +x /usr/local/bin/setup-wordpress.sh
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html && \
-    find /var/www/html -type d -exec chmod 755 {} \; && \
-    find /var/www/html -type f -exec chmod 644 {} \;
+# # Download and extract WordPress
+# RUN curl -o /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz && \
+#     tar -xzf /tmp/wordpress.tar.gz -C /var/www/html --strip-components=1 && \
+#     rm /tmp/wordpress.tar.gz
+
+# # Set permissions
+# RUN chown -R www-data:www-data /var/www/html && \
+#     find /var/www/html -type d -exec chmod 755 {} \; && \
+#     find /var/www/html -type f -exec chmod 644 {} \;
 
 # Expose PHP-FPM port (usually through a Unix socket or port 9000)
 EXPOSE 9000
 
-# Run PHP-FPM in the foreground
-CMD ["php-fpm7.4", "-F"]
+# # Run PHP-FPM in the foreground
+# CMD ["php-fpm7.4", "-F"]
+
+# Set entrypoint to our WordPress setup script
+ENTRYPOINT ["setup-wordpress.sh"]
