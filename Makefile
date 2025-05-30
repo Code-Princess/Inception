@@ -1,3 +1,5 @@
+all: build up
+
 setup:
 	mkdir -p /home/llacsivy/data/wordpress
 	mkdir -p /home/llacsivy/data/mariadb
@@ -16,4 +18,4 @@ re: fclean build up
 fclean: down
 	rm -rf ../data
 
-.PHONY: build up down fclean re
+.PHONY: all build up down fclean re
