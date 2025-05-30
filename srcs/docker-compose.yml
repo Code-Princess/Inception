@@ -54,7 +54,6 @@ services:
       - wp_admin_password
       - wp_user_password
 
-
   nginx:
     image: nginx
     build: ./requirements/nginx
@@ -68,16 +67,6 @@ services:
       - inception
     ports:
       - 443:443
-
-  dev:
-    image: dev_helper
-    build: ./requirements/dev/
-    depends_on:
-      - mariadb
-    networks:
-      - inception
-    stdin_open: true
-    tty: true
 
 secrets:
   db_root_password:

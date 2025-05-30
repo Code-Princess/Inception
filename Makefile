@@ -1,11 +1,6 @@
-# production:
 setup:
 	mkdir -p /home/llacsivy/data/wordpress
 	mkdir -p /home/llacsivy/data/mariadb
-
-# setup:
-# 	mkdir -p ../data/wordpress
-# 	mkdir -p ../data/mariadb
 
 build: setup
 	docker compose -f ./srcs/docker-compose.yml build
@@ -21,8 +16,4 @@ re: fclean build up
 fclean: down
 	rm -rf ../data
 
-# build, up, down rm clean 
-
-
-
-.PHONY: all build up down start stop clean fclean re logs
+.PHONY: build up down fclean re
