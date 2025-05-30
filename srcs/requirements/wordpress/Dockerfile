@@ -3,8 +3,8 @@ FROM debian:bullseye
 RUN apt-get update && apt-get install -y \
 	php-fpm \
 	php-mysql \
-	php-curl \
-	php-gd \
+	# php-curl \
+	# php-gd \
 	php-mbstring \
 	php-xml \
 	php-zip \
@@ -12,6 +12,15 @@ RUN apt-get update && apt-get install -y \
 	unzip \
 	wget \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Create required directory for PHP-FPM
+RUN mkdir -p /run/php
+
+# Configure PHP-FPM to listen on TCP instead of Unix socket
+RUN sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php/*/fpm/pool.d/www.conf
+
+# # Configure PHP-FPM to run in foreground
+# RUN sed -i 's/;daemonize = yes/daemonize = no/' /etc/php/*/fpm/php-fpm.conf
 
 # Create working directory
 WORKDIR /var/www/html

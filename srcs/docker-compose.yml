@@ -39,30 +39,27 @@ services:
     #     retries: 10
     #     start_period: 10s
 
-  dev:
-    image: dev_helper
-    build: ./requirements/dev/
+
+  wordpress:
+    image: wordpress:latest
+    build: ./requirements/wordpress
     depends_on:
       - mariadb
+    restart: always
+    volumes:
+      - type: bind
+        source: /home/llacsivy/data/wordpress
+        target: /var/www/html
     networks:
       - inception
-    stdin_open: true
-    tty: true
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: 123
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_NAME: wordpress
 
-  # wordpress:
-  #   image: wordpress:latest
-  #   build: ./requirements/wordpress
-  #   depends_on:
-  #     - mariadb
-  #   restart: always
-  #   volumes:
-  #     - /home/llacsivy/data/wordpress:/var/www/html
-  #   ports:
-  #     - "80:80"
-  #   environment:
-  #     WORDPRESS_DB_USER: wp_user
-  #     WORDPRESS_DB_PASSWORD: wp_db_password
-  #     WORDPRESS_DB_HOST: db:3306
 
   nginx:
     image: nginx
@@ -73,6 +70,8 @@ services:
         target: /var/www/html
       # - /home/llacsivy/data/wordpress:/var/www/html
       # - /Users/llacsivy/Coding-Projects/Inception/data/wordpress:/var/www/html
+    networks:
+      - inception
     ports:
       - 443:443
     # depends_on:
@@ -107,3 +106,13 @@ secrets:
 #       type: none
 #       o: bind
 #       device: /home/llacsivy/data/wordpress
+
+  # dev:
+  #   image: dev_helper
+  #   build: ./requirements/dev/
+  #   depends_on:
+  #     - mariadb
+  #   networks:
+  #     - inception
+  #   stdin_open: true
+  #   tty: true
