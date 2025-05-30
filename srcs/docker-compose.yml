@@ -43,7 +43,6 @@ services:
       - "80:80"
     environment:
       - WORDPRESS_DB_USER=wp_user
-      # - WORDPRESS_DB_PASSWORD=123
       - WORDPRESS_DB_HOST=mariadb:3306
       - WORDPRESS_DB_NAME=wp_db
       - WORDPRESS_DB_HOST=mariadb
@@ -96,22 +95,3 @@ secrets:
     file: ../secrets/wp_admin_password.txt
   wp_db_password:
     file: ../secrets/wp_db_password.txt
-
-
-
-
-# volumes:
-#   mariadb_data:
-#     name: mariadb_vol
-#     driver: local
-#     driver-opts:
-#       type: none
-#       o: bind
-#       device: /home/llacsivy/data/mariadb
-#   wordpress_data:
-#     name: wordpress_vol
-#     driver: local
-#     driver-opts:
-#       type: none
-#       o: bind
-#       device: /home/llacsivy/data/wordpress
