@@ -16,6 +16,6 @@ down:
 re: fclean build up
 
 fclean: down
-	rm -rf ../data
+	rm -rf /home/llacsivy/data
 
 .PHONY: all build up down fclean re
